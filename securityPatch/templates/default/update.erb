@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ -f /etc/yum/prepatch.sh ]; then
+   /etc/yum/prepatch.sh
+fi
+
+mkdir -p /var/log/autopatch
+
+/usr/bin/yum -y -v update yum >> /var/log/autopatch/autopatchlog_$(date +%Y%d%m) 2>&1
+
+/usr/bin/yum -y -v update --exclude="<%= @exclude %>" >> /var/log/autopatch/autopatchlog_$(date +%Y%d%m) 2>&1
+if [ $? -eq 0 ]; then
+    logger -t autopatching success
+else
+    logger -t autopatching failed
+    echo -e "Autopatching failed on $(hostname -f) at $(date +%H:%M). \nPlease find the log /var/log/autopatch/autopatchlog_$(date +%Y%d%m)." | mailx -s "Autopatch Failure" -r yourEmail@github.com
+fi
+
+if [ -f /etc/yum/postpatch.sh ]; then
+   /etc/yum/postpatch.sh
+fi

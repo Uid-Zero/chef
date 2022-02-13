@@ -1,0 +1,9 @@
+{
+  "id": "fqdn",
+  "hour": "10",
+  "minute": "50",
+  "day": "*",
+  "weekday": "1",
+  "day_range": "[ $(date +\\%d) -gt 21 ] && [ $(date +\\%d) -le 28 ]",
+  "type": "default"
+}

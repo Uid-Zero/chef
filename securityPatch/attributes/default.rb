@@ -1,0 +1,1 @@
+default['securityPatch']['updates']['enabled'] = true
